@@ -1,0 +1,132 @@
+<!-- ========================================== -->
+<!-- ARQUIVO 2: admin.html (Painel Admin)       -->
+<!-- ========================================== -->
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoGeral - Painel Administrativo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Supabase JS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen">
+
+    <!-- Header Admin -->
+    <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-black tracking-wider text-red-600">VIDEO<span class="text-white">GERAL</span></span>
+            <span class="bg-red-600/20 text-red-500 text-xs font-bold px-2.5 py-1 rounded-md border border-red-600/30">PAINEL ADMIN</span>
+        </div>
+        <a href="index.html" target="_blank" class="text-xs text-slate-400 hover:text-white transition flex items-center">
+            <i class="fa-solid fa-arrow-up-right-from-square mr-1.5"></i> Ver Site Público
+        </a>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-4xl mx-auto px-4 py-8">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl">
+            <h1 class="text-xl font-bold text-white mb-6 flex items-center">
+                <i class="fa-solid fa-cloud-arrow-up text-red-600 mr-2"></i> Enviar Novo Conteúdo
+            </h1>
+
+            <form id="upload-form" class="space-y-5">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Título do Vídeo</label>
+                    <input type="text" id="title" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition" placeholder="Ex: A Vingança do CEO - Ep 01">
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Categoria</label>
+                        <select id="category" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition">
+                            <option value="Comédia e Humor">Comédia e Humor</option>
+                            <option value="Mini-Dramas Verticais">Mini-Dramas Verticais</option>
+                            <option value="Música e Clipes">Música e Clipes</option>
+                            <option value="Desafios e Experimentos">Desafios e Experimentos</option>
+                            <option value="Games e Highlights">Games e Highlights</option>
+                            <option value="Curiosidades">Curiosidades</option>
+                            <option value="Filmes e Séries">Filmes e Séries</option>
+                            <option value="Dicas e Life Hacks">Dicas e Life Hacks</option>
+                            <option value="Fofoca e Cultura Pop">Fofoca e Cultura Pop</option>
+                            <option value="Esportes">Esportes</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Duração (Ex: 4:12 ou 1h 24m)</label>
+                        <input type="text" id="duration" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition" placeholder="Ex: 5:40">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">URL da Imagem de Capa (Thumbnail)</label>
+                    <input type="url" id="thumbnail" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition" placeholder="https://images.unsplash.com/...">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">URL do Vídeo (Cloudflare R2 / Bunny.net / MP4)</label>
+                    <input type="url" id="url" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition" placeholder="https://seu-storage.com/video.mp4">
+                </div>
+
+                <div id="status-message" class="hidden text-sm p-3 rounded-xl"></div>
+
+                <button type="submit" id="submit-btn" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-red-600/30 flex items-center justify-center space-x-2">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Publicar Vídeo</span>
+                </button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Script de Envio para o Supabase -->
+    <script>
+        // TODO: Substitua com suas credenciais do Supabase
+        const SUPABASE_URL = 'SUA_SUPABASE_URL_AQUI';
+        const SUPABASE_ANON_KEY = 'SUA_SUPABASE_ANON_KEY_AQUI';
+
+        const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        document.getElementById('upload-form').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const btn = document.getElementById('submit-btn');
+            const statusDiv = document.getElementById('status-message');
+            
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Publicando...';
+            statusDiv.classList.add('hidden');
+
+            const newVideo = {
+                title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
+                duration: document.getElementById('duration').value,
+                thumbnail: document.getElementById('thumbnail').value,
+                url: document.getElementById('url').value,
+                channel: 'VideoGeral',
+                views: '0'
+            };
+
+            try {
+                const { error } = await _supabase.from('videos').insert([newVideo]);
+
+                if (error) throw error;
+
+                statusDiv.className = 'text-sm p-3 rounded-xl bg-emerald-950/50 border border-emerald-800 text-emerald-400';
+                statusDiv.textContent = 'Vídeo publicado com sucesso!';
+                statusDiv.classList.remove('hidden');
+                
+                document.getElementById('upload-form').reset();
+            } catch (err) {
+                statusDiv.className = 'text-sm p-3 rounded-xl bg-red-950/50 border border-red-800 text-red-400';
+                statusDiv.textContent = 'Erro ao publicar: ' + err.message;
+                statusDiv.classList.remove('hidden');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Publicar Vídeo';
+            }
+        });
+    </script>
+</body>
+</html>
