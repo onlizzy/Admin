@@ -3,121 +3,216 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VideoGeral - Painel Administrativo</title>
+    <title>RN TV - Painel Administrativo de Notícias | rn.co.mz</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
-<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen">
+<body class="bg-slate-950 text-slate-100 font-sans antialiased min-h-screen pb-12">
 
     <!-- Header Admin -->
-    <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+    <header class="bg-slate-900 border-b border-slate-800 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
         <div class="flex items-center space-x-3">
-            <span class="text-xl font-black tracking-wider text-red-600">VIDEO<span class="text-white">GERAL</span></span>
-            <span class="bg-red-600/20 text-red-500 text-xs font-bold px-2.5 py-1 rounded-md border border-red-600/30">PAINEL ADMIN</span>
+            <span class="text-xl font-black tracking-wider text-red-600">RN<span class="text-white">TV</span></span>
+            <span class="bg-red-600/20 text-red-500 text-xs font-bold px-2.5 py-1 rounded-md border border-red-600/30">PAINEL DE NOTÍCIAS</span>
         </div>
         <a href="index.html" class="text-xs text-slate-400 hover:text-white transition flex items-center">
-            <i class="fa-solid fa-arrow-up-right-from-square mr-1.5"></i> Ver Site Público
+            <i class="fa-solid fa-arrow-up-right-from-square mr-1.5"></i> Ver Canal ao Vivo / Site
         </a>
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-4xl mx-auto px-4 py-8">
+    <main class="max-w-4xl mx-auto px-4 py-8 space-y-10">
+        
+        <!-- Formulário de Envio -->
         <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl">
             <h1 class="text-xl font-bold text-white mb-6 flex items-center">
-                <i class="fa-solid fa-cloud-arrow-up text-red-600 mr-2"></i> Enviar Arquivo de Vídeo Direto
+                <i class="fa-solid fa-video text-red-600 mr-2"></i> Publicar Nova Reportagem / Vídeo
             </h1>
 
             <form id="upload-form" class="space-y-5">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Título do Vídeo</label>
-                    <input type="text" id="title" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition" placeholder="Ex: A Vingança do CEO - Ep 01">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Título da Notícia / Reportagem</label>
+                    <input type="text" id="title" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition" placeholder="Ex: Governo anuncia novas medidas econômicas na capital">
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Categoria</label>
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Categoria Jornalística</label>
                         <select id="category" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition">
-                            <option value="Comédia e Humor">Comédia e Humor</option>
-                            <option value="Mini-Dramas Verticais">Mini-Dramas Verticais</option>
-                            <option value="Música e Clipes">Música e Clipes</option>
-                            <option value="Desafios e Experimentos">Desafios e Experimentos</option>
-                            <option value="Games e Highlights">Games e Highlights</option>
-                            <option value="Curiosidades">Curiosidades</option>
-                            <option value="Filmes e Séries">Filmes e Séries</option>
-                            <option value="Dicas e Life Hacks">Dicas e Life Hacks</option>
-                            <option value="Fofoca e Cultura Pop">Fofoca e Cultura Pop</option>
-                            <option value="Esportes">Esportes</option>
+                            <option value="Última Hora">Última Hora / Breaking News</option>
+                            <option value="Política">Política</option>
+                            <option value="Economia">Economia e Negócios</option>
+                            <option value="Sociedade">Sociedade e Cotidiano</option>
+                            <option value="Desporto">Desporto</option>
+                            <option value="Internacional">Internacional</option>
+                            <option value="Reportagem Especial">Reportagem Especial</option>
+                            <option value="Entrevistas">Entrevistas e Debate</option>
                         </select>
                     </div>
                     <div>
-                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Duração (Ex: 4:12 ou 1h 24m)</label>
-                        <input type="text" id="duration" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition" placeholder="Ex: 5:40">
+                        <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Duração do Vídeo</label>
+                        <input type="text" id="duration" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition" placeholder="Ex: 2:30 ou 15:00">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">URL da Imagem de Capa (Thumbnail)</label>
-                    <input type="url" id="thumbnail" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-red-600 transition" placeholder="https://images.unsplash.com/...">
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Imagem de Capa (Thumbnail da Matéria)</label>
+                    <input type="file" id="thumbnail-file" accept="image/*" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-slate-800 file:text-white hover:file:bg-slate-700 cursor-pointer">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Selecionar Arquivo de Vídeo (.mp4)</label>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-2">Arquivo de Vídeo da Reportagem (.mp4)</label>
                     <input type="file" id="video-file" accept="video/*" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-red-600 file:text-white hover:file:bg-red-500 cursor-pointer">
                 </div>
 
                 <div id="status-message" class="hidden text-sm p-3 rounded-xl"></div>
 
                 <button type="submit" id="submit-btn" class="w-full bg-red-600 hover:bg-red-500 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-red-600/30 flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-paper-plane"></i>
-                    <span>Fazer Upload e Publicar</span>
+                    <i class="fa-solid fa-broadcast-tower"></i>
+                    <span>Transmitir / Publicar no RN TV</span>
                 </button>
             </form>
         </div>
+
+        <!-- Seção de Gerenciamento de Vídeos Postados -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 md:p-8 shadow-xl">
+            <h2 class="text-lg font-bold text-white mb-6 flex items-center justify-between">
+                <span><i class="fa-solid fa-list-ul text-red-600 mr-2"></i> Reportagens Publicadas</span>
+                <span id="video-count" class="text-xs bg-slate-800 text-slate-300 px-2.5 py-1 rounded-full">0 vídeos</span>
+            </h2>
+
+            <div id="admin-videos-list" class="space-y-3">
+                <div class="text-center py-6 text-slate-500 text-xs">Carregando lista de reportagens...</div>
+            </div>
+        </div>
+
     </main>
 
     <script>
-        const SUPABASE_URL = 'SUA_SUPABASE_URL_AQUI'; // Ex: https://xyzabc.supabase.co
+        const SUPABASE_URL = 'https://llajdcjedkvvmdqjszfx.supabase.co';
         const SUPABASE_KEY = 'sb_publishable_FNy8BJLIdTEyWPRBxfb9hg_gisFcT7d';
 
         const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
+        // Função para limpar nomes de arquivos (remover acentos e espaços)
+        function limparNomeArquivo(nome) {
+            return nome
+                .normalize('NFD').replace(/[\u0300-\u036f]/g, "")
+                .replace(/[^a-zA-Z0-9._-]/g, '_');
+        }
+
+        // Carregar lista de vídeos no painel admin
+        async function carregarVideosAdmin() {
+            const listContainer = document.getElementById('admin-videos-list');
+            const countBadge = document.getElementById('video-count');
+
+            try {
+                const { data: videos, error } = await _supabase
+                    .from('videos')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) throw error;
+
+                countBadge.textContent = `${videos.length} reportagem${videos.length === 1 ? '' : 's'}`;
+
+                if (!videos || videos.length === 0) {
+                    listContainer.innerHTML = '<p class="text-center text-slate-500 text-xs py-6">Nenhuma reportagem publicada ainda.</p>';
+                    return;
+                }
+
+                listContainer.innerHTML = videos.map(video => `
+                    <div class="flex items-center justify-between bg-slate-950 border border-slate-800 p-3 rounded-xl hover:border-slate-700 transition">
+                        <div class="flex items-center space-x-3 overflow-hidden">
+                            <img src="${video.thumbnail}" alt="${video.title}" class="w-16 h-10 object-cover rounded-lg bg-slate-900 flex-shrink-0">
+                            <div class="truncate">
+                                <h4 class="text-xs font-bold text-white truncate">${video.title}</h4>
+                                <p class="text-[10px] text-red-500 uppercase mt-0.5">${video.category} • ${video.duration || '0:00'}</p>
+                            </div>
+                        </div>
+                        <button onclick="apagarVideo(${video.id})" class="bg-red-600/10 hover:bg-red-600 text-red-500 hover:text-white px-3 py-2 rounded-lg text-xs font-semibold transition flex items-center flex-shrink-0 ml-3" title="Apagar reportagem">
+                            <i class="fa-solid fa-trash-can"></i>
+                        </button>
+                    </div>
+                `).join('');
+
+            } catch (err) {
+                console.error(err);
+                listContainer.innerHTML = '<p class="text-center text-red-500 text-xs py-4">Erro ao carregar lista de reportagens.</p>';
+            }
+        }
+
+        // Deletar vídeo
+        async function apagarVideo(id) {
+            if (!confirm("Tem certeza que deseja remover esta reportagem do ar?")) return;
+
+            try {
+                const { error } = await _supabase
+                    .from('videos')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) throw error;
+
+                carregarVideosAdmin();
+            } catch (err) {
+                alert("Erro ao apagar reportagem: " + err.message);
+            }
+        }
+
+        // Envio de formulário
         document.getElementById('upload-form').addEventListener('submit', async (e) => {
             e.preventDefault();
             
             const btn = document.getElementById('submit-btn');
             const statusDiv = document.getElementById('status-message');
-            const videoFileInput = document.getElementById('video-file');
             
-            if (videoFileInput.files.length === 0) return;
-            const videoFile = videoFileInput.files[0];
+            const thumbInput = document.getElementById('thumbnail-file');
+            const videoInput = document.getElementById('video-file');
+            
+            if (thumbInput.files.length === 0 || videoInput.files.length === 0) return;
+            
+            const thumbFile = thumbInput.files[0];
+            const videoFile = videoInput.files[0];
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando vídeo para a nuvem...';
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Enviando material jornalístico...';
             statusDiv.classList.add('hidden');
 
             try {
-                // 1. Upload do arquivo de vídeo para o Storage do Supabase (Bucket: videos)
-                const fileName = `${Date.now()}_${videoFile.name.replace(/\s+/g, '_')}`;
-                const { data: uploadData, error: uploadError } = await _supabase.storage
+                // 1. Upload da Thumbnail
+                const thumbName = `${Date.now()}_thumb_${limparNomeArquivo(thumbFile.name)}`;
+                const { error: thumbUploadError } = await _supabase.storage
                     .from('videos')
-                    .upload(fileName, videoFile);
+                    .upload(thumbName, thumbFile);
 
-                if (uploadError) throw uploadError;
+                if (thumbUploadError) throw thumbUploadError;
 
-                // 2. Obter a URL pública do arquivo enviado
-                const { data: { publicUrl } } = _supabase.storage
+                const { data: { publicUrl: thumbUrl } } = _supabase.storage
                     .from('videos')
-                    .getPublicUrl(fileName);
+                    .getPublicUrl(thumbName);
 
-                // 3. Inserir registro na tabela 'videos'
+                // 2. Upload do Vídeo
+                const videoName = `${Date.now()}_${limparNomeArquivo(videoFile.name)}`;
+                const { error: videoUploadError } = await _supabase.storage
+                    .from('videos')
+                    .upload(videoName, videoFile);
+
+                if (videoUploadError) throw videoUploadError;
+
+                const { data: { publicUrl: videoUrl } } = _supabase.storage
+                    .from('videos')
+                    .getPublicUrl(videoName);
+
+                // 3. Salvar no banco de dados
                 const newVideo = {
                     title: document.getElementById('title').value,
                     category: document.getElementById('category').value,
                     duration: document.getElementById('duration').value,
-                    thumbnail: document.getElementById('thumbnail').value,
-                    url: publicUrl,
-                    channel: 'VideoGeral',
+                    thumbnail: thumbUrl,
+                    url: videoUrl,
+                    channel: 'RN TV',
                     views: '0'
                 };
 
@@ -125,19 +220,23 @@
                 if (dbError) throw dbError;
 
                 statusDiv.className = 'text-sm p-3 rounded-xl bg-emerald-950/50 border border-emerald-800 text-emerald-400';
-                statusDiv.textContent = 'Vídeo enviado e publicado com sucesso!';
+                statusDiv.textContent = 'Reportagem publicada com sucesso no RN TV!';
                 statusDiv.classList.remove('hidden');
                 
                 document.getElementById('upload-form').reset();
+                carregarVideosAdmin();
             } catch (err) {
                 statusDiv.className = 'text-sm p-3 rounded-xl bg-red-950/50 border border-red-800 text-red-400';
                 statusDiv.textContent = 'Erro no envio: ' + err.message;
                 statusDiv.classList.remove('hidden');
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Fazer Upload e Publicar';
+                btn.innerHTML = '<i class="fa-solid fa-broadcast-tower"></i> Transmitir / Publicar no RN TV';
             }
         });
+
+        // Inicializar lista ao abrir a página
+        carregarVideosAdmin();
     </script>
 </body>
 </html>
